@@ -1,34 +1,52 @@
 #include <gtest/gtest.h>
 #include "Soundex.h"
 
-
-TEST(SoundexTest, BasicTest) {
-    EXPECT_EQ(generateSoundex("Singh"), "S520");
-    EXPECT_EQ(generateSoundex("Kumar"), "K560");
-    EXPECT_EQ(generateSoundex("Sharma"), "S650");
-    EXPECT_EQ(generateSoundex("Patel"), "P340");
-    EXPECT_EQ(generateSoundex("Gupta"), "G130");
-}
- 
-TEST(SoundexTest, EdgeCases) {
-    EXPECT_EQ(generateSoundex("Chand"), "C530");
-    EXPECT_EQ(generateSoundex("Mehra"), "M600");
-    EXPECT_EQ(generateSoundex("Pandey"), "P530");
+TEST(SoundexTest, HandlesEmptyString) {
     EXPECT_EQ(generateSoundex(""), "");
 }
- 
-TEST(SoundexTest, CaseInsensitive) {
-    EXPECT_EQ(generateSoundex("SINGH"), "S520");
-    EXPECT_EQ(generateSoundex("kUmAr"), "K560");
-    EXPECT_EQ(generateSoundex("shARmA"), "S650");
-}
- 
-TEST(SoundexTest, SingleCharacterName) {
+
+TEST(SoundexTest, HandlesSingleCharacter) {
     EXPECT_EQ(generateSoundex("A"), "A000");
-    EXPECT_EQ(generateSoundex("B"), "B000");
 }
- 
-TEST(SoundexTest, AllVowels) {
-    EXPECT_EQ(generateSoundex("Aeio"), "A000");
-    EXPECT_EQ(generateSoundex("Euio"), "E000");
+
+TEST(SoundexTest, HandlesDuplicatesAndSkips) {
+    EXPECT_EQ(generateSoundex("AABBBB"), "A100");
+}
+
+TEST(SoundexTest, HandlesMixedCase) {
+    EXPECT_EQ(generateSoundex("McDonald"), "M235");
+}
+
+TEST(SoundexTest, HandlesNonAlphabeticCharacters) {
+    EXPECT_EQ(generateSoundex("John123"), "J500");
+}
+
+// Additional tests to cover edge cases and typical inputs
+
+TEST(SoundexTest, HandlesLongInput) {
+    EXPECT_EQ(generateSoundex("Washington"), "W252");
+}
+
+TEST(SoundexTest, HandlesShortInput) {
+    EXPECT_EQ(generateSoundex("Li"), "L000");
+}
+
+TEST(SoundexTest, ProducesExactlyFourCharacters) {
+    EXPECT_EQ(generateSoundex("Ashcraft"), "A261");
+}
+
+TEST(SoundexTest, HandlesAllZeros) {
+    EXPECT_EQ(generateSoundex("AEIOU"), "A000");
+}
+
+TEST(SoundexTest, HandlesSameSoundexCodeCharacters) {
+    EXPECT_EQ(generateSoundex("BFPV"), "B000");
+}
+
+TEST(SoundexTest, HandlesSkippedCharacters) {
+    EXPECT_EQ(generateSoundex("Aeiouhwy"), "A000");
+}
+
+TEST(SoundexTest, HandlesSeperationByZeroCodeCharacters) {
+    EXPECT_EQ(generateSoundex("BhFyPV"), "B000");
 }
