@@ -1,45 +1,34 @@
 #include <gtest/gtest.h>
-#include <cstring> 
-#include "Soundex.h" 
+#include "Soundex.h"
 
-// Fixture for Soundex tests
-class SoundexTestsuite : public ::testing::Test {
-protected:
-    char soundex[5];
 
-    void generateAndAssert(const std::string& input, const std::string& expected) {
-        generateSoundex(input.c_str(), soundex);
-        ASSERT_STREQ(soundex, expected.c_str());
-    }
-};
-
-TEST_F(SoundexTestsuite, ReplacesConsonantsWithAppropriateDigits) {
-    generateAndAssert("AX", "A200");
+TEST(SoundexTest, BasicTest) {
+    EXPECT_EQ(generateSoundex("Singh"), "S520");
+    EXPECT_EQ(generateSoundex("Kumar"), "K560");
+    EXPECT_EQ(generateSoundex("Sharma"), "S650");
+    EXPECT_EQ(generateSoundex("Patel"), "P340");
+    EXPECT_EQ(generateSoundex("Gupta"), "G130");
 }
-
-TEST_F(SoundexTestsuite, PadsWithZerosToEnsureLengthIsFour) {
-    generateAndAssert("A", "A000");
+ 
+TEST(SoundexTest, EdgeCases) {
+    EXPECT_EQ(generateSoundex("Chand"), "C530");
+    EXPECT_EQ(generateSoundex("Mehra"), "M600");
+    EXPECT_EQ(generateSoundex("Pandey"), "P530");
+    EXPECT_EQ(generateSoundex(""), "");
 }
-
-TEST_F(SoundexTestsuite, IgnoresCase) {
-    generateAndAssert("Ashcraft", "A261");
-    generateAndAssert("ashcraft", "A261");
+ 
+TEST(SoundexTest, CaseInsensitive) {
+    EXPECT_EQ(generateSoundex("SINGH"), "S520");
+    EXPECT_EQ(generateSoundex("kUmAr"), "K560");
+    EXPECT_EQ(generateSoundex("shARmA"), "S650");
 }
-
-TEST_F(SoundexTestsuite, CombinesMultipleCharactersCorrectly) {
-    generateAndAssert("Robert", "R163");
+ 
+TEST(SoundexTest, SingleCharacterName) {
+    EXPECT_EQ(generateSoundex("A"), "A000");
+    EXPECT_EQ(generateSoundex("B"), "B000");
 }
-
-TEST_F(SoundexTestsuite, HandlesNamesWithDifferentLengths) {
-    generateAndAssert("A", "A000");
-    generateAndAssert("Abcdefg", "A123");
-}
-
-TEST_F(SoundexTestsuite, HandlesNamesWithAdjacentSimilarCodes) {
-    generateAndAssert("Pfister", "P236");
-}
-
-int main(int argc, char **argv) {
-    ::testing::InitGoogleTest(&argc, argv);
-    return RUN_ALL_TESTS();
+ 
+TEST(SoundexTest, AllVowels) {
+    EXPECT_EQ(generateSoundex("Aeio"), "A000");
+    EXPECT_EQ(generateSoundex("Euio"), "E000");
 }
