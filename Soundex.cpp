@@ -45,7 +45,7 @@ std::string generateSoundex(const std::string& name) {
 
     std::string soundex = processInitialCharacter(name);
     processRemainingCharacters(name, soundex);
-
+    
     soundex.resize(4, '0');
     return soundex;
 }
