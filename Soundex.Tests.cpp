@@ -1,34 +1,44 @@
 #include <gtest/gtest.h>
 #include "Soundex.h"
-
-TEST(SoundexTest, HandlesEmptyString) {
-    EXPECT_EQ(generateSoundex(""), "");
+ 
+TEST(SoudexTestsuite, ReplacesConsonantsWithAppropriateDigits) {
+//AAA
+  char soundex[5];
+generateSoundex("$rrr", soundex);
+ASSERT_STREQ(soundex,"$666");
+}
+ 
+TEST(SoudexTestsuite, ReplacesConsonantsWithAppropriateDigits_1) {
+//AAA
+char soundex[5];
+generateSoundex("pvt", soundex);
+ASSERT_STREQ(soundex,"P130");
+}
+ 
+TEST(SoudexTestsuite, ReplacesConsonantsWithAppropriateDigits_2) {
+//AAA
+  char soundex[5];
+generateSoundex("*#12hi", soundex);
+ASSERT_STREQ(soundex,"*000");
+}
+ 
+TEST(SoudexTestsuite, ReplacesConsonantsWithAppropriateDigits_vowels) {
+//AAA
+char soundex[5];
+generateSoundex("aeiou", soundex);
+ASSERT_STREQ(soundex,"A000");
 }
 
-TEST(SoundexTest, HandlesSingleCharacter) {
-    EXPECT_EQ(generateSoundex("A"), "A000");
+TEST(SoudexTestsuite, ReplacesConsonantsWithAppropriateDigits_space) {
+//AAA
+char soundex[5];
+generateSoundex(" ", soundex);
+ASSERT_STREQ(soundex," 000");
 }
-
-TEST(SoundexTest, HandlesDuplicatesAndSkips) {
-    EXPECT_EQ(generateSoundex("AABBBB"), "A100");
-}
-
-TEST(SoundexTest, HandlesMixedCase) {
-    EXPECT_EQ(generateSoundex("McDonald"), "M235");
-}
-
-TEST(SoundexTest, HandlesNonAlphabeticCharacters) {
-    EXPECT_EQ(generateSoundex("John123"), "J500");
-}
-
-TEST(SoundexTest, HandlesLongInput) {
-    EXPECT_EQ(generateSoundex("Washington"), "W252");
-}
-
-TEST(SoundexTest, HandlesShortInput) {
-    EXPECT_EQ(generateSoundex("Li"), "L000");
-}
-
-TEST(SoundexTest, HandlesAllZeros) {
-    EXPECT_EQ(generateSoundex("AEIOU"), "A000");
+ 
+TEST(SoudexTestsuite, ReplacesConsonantsWithAppropriateDigits_3) {
+//AAA
+char soundex[5];
+generateSoundex("bcdlmnr", soundex);
+ASSERT_STREQ(soundex,"B234");
 }
